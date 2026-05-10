@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bahía Alta · Quinched, Chiloé</title>
+  <meta name="description" content="Parcelas de 5.000 m² con vista al mar interior en Quinched, Chiloé. Un proyecto de vida sobre la bahía." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            arena:   '#D8C7A3',
+            mar:     '#5E7480',
+            oliva:   '#7A8471',
+            hueso:   '#F7F4EE',
+            carbon:  '#2F3437',
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans:  ['Montserrat', 'Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background-color: #F7F4EE; color: #2F3437; font-family: 'Montserrat', sans-serif; }
+
+    /* ── Fade-in on scroll ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.34s; }
+    .reveal-delay-4 { transition-delay: 0.46s; }
+
+    /* ── Hero parallax layer ── */
+    .hero-bg {
+      background-image: url('img/hero.jpg');
+      background-size: cover;
+      background-position: center 40%;
+      background-attachment: fixed;
+    }
+
+    /* ── Thin divider line ── */
+    .thin-line {
+      display: block;
+      width: 48px;
+      height: 1px;
+      background: currentColor;
+      margin: 0 auto;
+    }
+
+    /* ── Gallery hover ── */
+    .gallery-item img {
+      transition: transform 0.7s ease, filter 0.7s ease;
+      filter: saturate(0.85);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.04);
+      filter: saturate(1);
+    }
+
+    /* ── Nav glassmorphism ── */
+    .nav-glass {
+      background: rgba(247, 244, 238, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* ── CTA button pulse ── */
+    @keyframes soft-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(94, 116, 128, 0.25); }
+      50%       { box-shadow: 0 0 0 10px rgba(94, 116, 128, 0); }
+    }
+    .btn-pulse:hover { animation: soft-pulse 1.4s infinite; }
+
+    /* ── Horizontal scroll gallery on mobile ── */
+    .scroll-gallery {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 0.5rem;
+    }
+    .scroll-gallery::-webkit-scrollbar { display: none; }
+    .scroll-gallery-item {
+      flex: 0 0 80vw;
+      scroll-snap-align: start;
+    }
+    @media (min-width: 768px) {
+      .scroll-gallery { display: grid; grid-template-columns: repeat(3, 1fr); overflow-x: visible; }
+      .scroll-gallery-item { flex: unset; }
+    }
+
+    /* ── Feature card ── */
+    .feature-card {
+      border: 1px solid rgba(94, 116, 128, 0.2);
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+    .feature-card:hover {
+      border-color: rgba(94, 116, 128, 0.55);
+      transform: translateY(-4px);
+    }
+
+    /* ── Smooth underline links ── */
+    .link-hover {
+      position: relative;
+      text-decoration: none;
+    }
+    .link-hover::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: currentColor;
+      transition: width 0.3s ease;
+    }
+    .link-hover:hover::after { width: 100%; }
+  </style>
+</head>
+<body class="bg-hueso text-carbon">
+
+  <!-- ══════════════════════════════════════════
+       NAV
+  ══════════════════════════════════════════ -->
+  <header id="nav" class="nav-glass fixed top-0 left-0 right-0 z-50 border-b border-arena/40 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
+      <a href="#" class="font-serif text-xl tracking-widest text-carbon uppercase">
+        Bahía Alta <span class="text-mar">·</span> Quinched
+      </a>
+      <nav class="hidden md:flex items-center gap-8 font-sans text-xs tracking-widest uppercase text-carbon/70">
+        <a href="#presentacion" class="link-hover hover:text-carbon">El lugar</a>
+        <a href="#caracteristicas" class="link-hover hover:text-carbon">Características</a>
+        <a href="#galeria" class="link-hover hover:text-carbon">Galería</a>
+        <a href="#ubicacion" class="link-hover hover:text-carbon">Ubicación</a>
+        <a href="#contacto"
+           class="ml-4 px-5 py-2 border border-mar text-mar text-xs tracking-widest uppercase hover:bg-mar hover:text-hueso transition-colors duration-300">
+          Contacto
+        </a>
+      </nav>
+      <!-- Mobile hamburger -->
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menú">
+        <span class="block w-6 h-px bg-carbon transition-all duration-300" id="bar1"></span>
+        <span class="block w-6 h-px bg-carbon transition-all duration-300" id="bar2"></span>
+        <span class="block w-4 h-px bg-carbon transition-all duration-300" id="bar3"></span>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-hueso border-t border-arena/40 px-6 py-6 flex flex-col gap-5 font-sans text-xs tracking-widest uppercase text-carbon/70">
+      <a href="#presentacion" class="hover:text-carbon" onclick="closeMobileMenu()">El lugar</a>
+      <a href="#caracteristicas" class="hover:text-carbon" onclick="closeMobileMenu()">Características</a>
+      <a href="#galeria" class="hover:text-carbon" onclick="closeMobileMenu()">Galería</a>
+      <a href="#ubicacion" class="hover:text-carbon" onclick="closeMobileMenu()">Ubicación</a>
+      <a href="#contacto" class="text-mar border border-mar px-4 py-2 text-center hover:bg-mar hover:text-hueso transition-colors" onclick="closeMobileMenu()">Contacto</a>
+    </div>
+  </header>
+
+
+  <!-- ══════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════ -->
+  <section class="hero-bg relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Dark overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-carbon/50 via-carbon/30 to-carbon/60"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center px-6 max-w-3xl mx-auto">
+      <p class="font-sans text-xs tracking-[0.35em] uppercase text-arena/80 mb-6 reveal">
+        Quinched · Chiloé · Chile
+      </p>
+      <h1 class="font-serif text-6xl md:text-8xl lg:text-9xl font-light tracking-wide text-hueso leading-none mb-4 reveal reveal-delay-1">
+        Bahía<br />Alta
+      </h1>
+      <span class="thin-line text-arena/60 mb-8 reveal reveal-delay-2" style="display:block; width:48px; height:1px; background:#D8C7A3; margin: 1.5rem auto;"></span>
+      <p class="font-serif italic text-xl md:text-2xl text-hueso/90 font-light leading-relaxed mb-10 reveal reveal-delay-3">
+        Vive sobre la bahía en uno de los paisajes<br class="hidden md:block" />
+        más lindos de Chiloé.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center reveal reveal-delay-4">
+        <a href="#contacto"
+           class="btn-pulse px-8 py-3.5 bg-mar text-hueso font-sans text-xs tracking-widest uppercase border border-mar hover:bg-transparent hover:text-hueso transition-all duration-300">
+          Solicitar información
+        </a>
+        <a href="#ubicacion"
+           class="px-8 py-3.5 border border-hueso/60 text-hueso font-sans text-xs tracking-widest uppercase hover:bg-hueso/10 transition-all duration-300">
+          Ver ubicación
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-hueso/50">
+      <span class="font-sans text-[10px] tracking-widest uppercase">Descubrir</span>
+      <div class="w-px h-12 bg-hueso/30 animate-pulse"></div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       PRESENTACIÓN
+  ══════════════════════════════════════════ -->
+  <section id="presentacion" class="py-28 md:py-40 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="font-sans text-xs tracking-[0.35em] uppercase text-oliva mb-6 reveal">El proyecto</p>
+      <h2 class="font-serif text-5xl md:text-6xl font-light text-carbon leading-tight mb-8 reveal reveal-delay-1">
+        Un lugar para<br />mirar lejos
+      </h2>
+      <span class="inline-block w-12 h-px bg-arena mb-10 reveal reveal-delay-2"></span>
+      <p class="font-sans text-base md:text-lg text-carbon/70 leading-relaxed font-light max-w-2xl mx-auto reveal reveal-delay-3">
+        En Bahía Alta · Quinched, la naturaleza se abre frente al mar interior de Chiloé.
+        Parcelas amplias, entorno natural y una vista privilegiada para quienes buscan
+        calma, espacio y conexión con el sur.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       IMAGEN INMERSIVA 1
+  ══════════════════════════════════════════ -->
+  <div class="w-full h-[55vh] md:h-[75vh] overflow-hidden reveal">
+    <img src="img/vista1.jpg" alt="Vista al mar interior desde Bahía Alta"
+         class="w-full h-full object-cover object-center" style="filter: saturate(0.9);" />
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+       CARACTERÍSTICAS
+  ══════════════════════════════════════════ -->
+  <section id="caracteristicas" class="py-28 md:py-40 px-6 bg-carbon text-hueso">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="font-sans text-xs tracking-[0.35em] uppercase text-arena/60 mb-5 reveal">Las parcelas</p>
+        <h2 class="font-serif text-5xl md:text-6xl font-light leading-tight reveal reveal-delay-1">
+          Amplitud con horizonte
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-hueso/10">
+        <!-- Card 1 -->
+        <div class="feature-card bg-carbon p-10 reveal">
+          <div class="mb-6">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="24" height="24" stroke="#D8C7A3" stroke-width="1"/>
+              <rect x="8" y="8" width="16" height="16" stroke="#5E7480" stroke-width="0.75"/>
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl font-light text-arena mb-3">5.000 m²</h3>
+          <p class="font-sans text-sm text-hueso/55 font-light leading-relaxed">
+            Superficie generosa para construir con libertad, mantener jardín, huerto y espacio natural propio.
+          </p>
+        </div>
+        <!-- Card 2 -->
+        <div class="feature-card bg-carbon p-10 reveal reveal-delay-1">
+          <div class="mb-6">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 20 Q16 8 28 20" stroke="#D8C7A3" stroke-width="1" fill="none"/>
+              <line x1="4" y1="24" x2="28" y2="24" stroke="#5E7480" stroke-width="0.75"/>
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl font-light text-arena mb-3">Vista al mar interior</h3>
+          <p class="font-sans text-sm text-hueso/55 font-light leading-relaxed">
+            Panorámica privilegiada sobre el canal y las islas del archipiélago de Chiloé.
+          </p>
+        </div>
+        <!-- Card 3 -->
+        <div class="feature-card bg-carbon p-10 reveal reveal-delay-2">
+          <div class="mb-6">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="10" stroke="#D8C7A3" stroke-width="1"/>
+              <path d="M16 6 C16 6 20 12 16 18 C12 12 16 6 16 6Z" fill="#5E7480" fill-opacity="0.6"/>
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl font-light text-arena mb-3">Entorno natural</h3>
+          <p class="font-sans text-sm text-hueso/55 font-light leading-relaxed">
+            Praderas, bosque nativo y vegetación austral que rodean cada parcela con vida y color.
+          </p>
+        </div>
+        <!-- Card 4 -->
+        <div class="feature-card bg-carbon p-10 reveal reveal-delay-3">
+          <div class="mb-6">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 4 L16 28 M4 16 L28 16" stroke="#D8C7A3" stroke-width="1"/>
+              <circle cx="16" cy="16" r="5" stroke="#5E7480" stroke-width="0.75" fill="none"/>
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl font-light text-arena mb-3">Quinched, Chiloé</h3>
+          <p class="font-sans text-sm text-hueso/55 font-light leading-relaxed">
+            Sector auténtico del archipiélago, con acceso por camino costero y conexión real con la identidad chilota.
+          </p>
+        </div>
+        <!-- Card 5 -->
+        <div class="feature-card bg-carbon p-10 sm:col-span-2 lg:col-span-2 reveal reveal-delay-4">
+          <div class="mb-6">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 26 L6 10 L16 4 L26 10 L26 26 Z" stroke="#D8C7A3" stroke-width="1" fill="none"/>
+              <rect x="12" y="18" width="8" height="8" stroke="#5E7480" stroke-width="0.75"/>
+            </svg>
+          </div>
+          <h3 class="font-serif text-2xl font-light text-arena mb-3">Segunda vivienda · refugio · inversión</h3>
+          <p class="font-sans text-sm text-hueso/55 font-light leading-relaxed max-w-lg">
+            Cada parcela es un lienzo. Ya sea para diseñar una casa de descanso, un retiro familiar o un proyecto de vida distinto, Bahía Alta ofrece el marco natural ideal.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       EXPERIENCIA
+  ══════════════════════════════════════════ -->
+  <section class="py-28 md:py-40 px-6">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="font-sans text-xs tracking-[0.35em] uppercase text-oliva mb-6 reveal">La experiencia</p>
+        <h2 class="font-serif text-5xl md:text-6xl font-light text-carbon leading-tight mb-8 reveal reveal-delay-1">
+          El sur desde<br />otra altura
+        </h2>
+        <span class="inline-block w-12 h-px bg-arena mb-8 reveal reveal-delay-2"></span>
+        <p class="font-sans text-base text-carbon/65 leading-relaxed font-light mb-6 reveal reveal-delay-3">
+          Más que una parcela, Bahía Alta es una invitación a vivir con amplitud,
+          silencio y horizonte. Un espacio donde construir una casa, un refugio
+          o una nueva forma de habitar el sur.
+        </p>
+        <p class="font-sans text-base text-carbon/65 leading-relaxed font-light reveal reveal-delay-4">
+          El tiempo aquí se mide en mareas, en luz que cambia sobre el agua,
+          en el sonido del viento entre la pradera. Chiloé en su estado más puro.
+        </p>
+      </div>
+      <div class="overflow-hidden h-[480px] reveal reveal-delay-2">
+        <img src="img/vista4.jpg" alt="Pradera y mar interior de Quinched"
+             class="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105"
+             style="filter: saturate(0.88);" />
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       GALERÍA
+  ══════════════════════════════════════════ -->
+  <section id="galeria" class="py-10 md:py-20 px-6 bg-hueso">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="font-sans text-xs tracking-[0.35em] uppercase text-oliva mb-5 reveal">El paisaje</p>
+        <h2 class="font-serif text-5xl md:text-6xl font-light text-carbon reveal reveal-delay-1">Imágenes del lugar</h2>
+      </div>
+
+      <!-- Grid desktop / scroll mobile -->
+      <div class="scroll-gallery">
+        <div class="scroll-gallery-item gallery-item overflow-hidden h-72 md:h-96 reveal">
+          <img src="img/hero.jpg" alt="Vista panorámica Bahía Alta" class="w-full h-full object-cover" />
+        </div>
+        <div class="scroll-gallery-item gallery-item overflow-hidden h-72 md:h-96 reveal reveal-delay-1">
+          <img src="img/vista2.jpg" alt="Mar interior Quinched" class="w-full h-full object-cover" />
+        </div>
+        <div class="scroll-gallery-item gallery-item overflow-hidden h-72 md:h-96 reveal reveal-delay-2">
+          <img src="img/vista3.jpg" alt="Entorno natural Chiloé" class="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      <!-- Segunda fila -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div class="gallery-item overflow-hidden h-72 md:h-80 reveal">
+          <img src="img/vista5.jpg" alt="Pradera sobre la bahía" class="w-full h-full object-cover" />
+        </div>
+        <div class="gallery-item overflow-hidden h-72 md:h-80 reveal reveal-delay-1">
+          <img src="img/vista1.jpg" alt="Horizonte y mar" class="w-full h-full object-cover" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       UBICACIÓN
+  ══════════════════════════════════════════ -->
+  <section id="ubicacion" class="py-28 md:py-40 px-6 bg-carbon text-hueso">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+      <!-- Mapa embed -->
+      <div class="overflow-hidden h-80 md:h-[460px] reveal order-2 md:order-1">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47618.94!2d-73.75!3d-42.45!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x961571b4e2d09a2f%3A0x0!2sQuinched%2C+Chilo%C3%A9!5e0!3m2!1ses!2scl!4v1699000000000!5m2!1ses!2scl"
+          width="100%" height="100%" style="border:0; filter: saturate(0.7) contrast(1.05);"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Ubicación Quinched Chiloé">
+        </iframe>
+      </div>
+      <!-- Texto -->
+      <div class="order-1 md:order-2">
+        <p class="font-sans text-xs tracking-[0.35em] uppercase text-arena/60 mb-6 reveal">Dónde encontrarnos</p>
+        <h2 class="font-serif text-5xl md:text-6xl font-light leading-tight mb-8 reveal reveal-delay-1">
+          Quinched,<br />Chiloé
+        </h2>
+        <span class="inline-block w-12 h-px bg-arena/50 mb-8 reveal reveal-delay-2"></span>
+        <p class="font-sans text-sm text-hueso/60 leading-relaxed font-light mb-8 reveal reveal-delay-3">
+          Un entorno auténtico del archipiélago, conectado con la naturaleza,
+          el mar interior y la identidad chilota. Quinched es un sector tranquilo
+          con acceso costero, a pocos kilómetros de Chonchi y de las principales
+          rutas de la Isla Grande de Chiloé.
+        </p>
+        <div class="space-y-4 reveal reveal-delay-4">
+          <div class="flex items-start gap-4">
+            <span class="w-1 h-1 rounded-full bg-arena mt-2 shrink-0"></span>
+            <p class="font-sans text-sm text-hueso/55 font-light">A 30 min de Castro en automóvil</p>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="w-1 h-1 rounded-full bg-arena mt-2 shrink-0"></span>
+            <p class="font-sans text-sm text-hueso/55 font-light">Acceso por camino costero pavimentado</p>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="w-1 h-1 rounded-full bg-arena mt-2 shrink-0"></span>
+            <p class="font-sans text-sm text-hueso/55 font-light">Electricidad y acceso a agua disponible en el sector</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       CTA FINAL + FORMULARIO
+  ══════════════════════════════════════════ -->
+  <section id="contacto" class="py-28 md:py-40 px-6">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+      <!-- Texto -->
+      <div>
+        <p class="font-sans text-xs tracking-[0.35em] uppercase text-oliva mb-6 reveal">Conversemos</p>
+        <h2 class="font-serif text-5xl md:text-6xl font-light text-carbon leading-tight mb-6 reveal reveal-delay-1">
+          Haz tuyo<br />este horizonte
+        </h2>
+        <span class="inline-block w-12 h-px bg-arena mb-8 reveal reveal-delay-2"></span>
+        <p class="font-sans text-base text-carbon/65 leading-relaxed font-light mb-10 reveal reveal-delay-3">
+          Solicita más información y descubre el potencial de
+          Bahía Alta · Quinched. Te respondemos con gusto.
+        </p>
+        <!-- WhatsApp CTA -->
+        <a href="https://wa.me/56900000000?text=Hola%2C%20me%20interesa%20Bah%C3%ADa%20Alta%20Quinched"
+           target="_blank" rel="noopener noreferrer"
+           class="btn-pulse inline-flex items-center gap-3 px-8 py-4 bg-oliva text-hueso font-sans text-xs tracking-widest uppercase hover:bg-mar transition-colors duration-300 reveal reveal-delay-4">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.562 4.14 1.54 5.876L.057 23.633a.5.5 0 0 0 .61.61l5.757-1.483A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.927a9.917 9.917 0 0 1-5.127-1.425l-.367-.217-3.795.976.998-3.707-.24-.38A9.922 9.922 0 0 1 2.073 12C2.073 6.515 6.515 2.073 12 2.073S21.927 6.515 21.927 12 17.485 21.927 12 21.927z"/>
+          </svg>
+          Contactar por WhatsApp
+        </a>
+      </div>
+
+      <!-- Formulario -->
+      <form id="contact-form" class="space-y-5 reveal reveal-delay-2" novalidate>
+        <div>
+          <label class="block font-sans text-xs tracking-widest uppercase text-carbon/50 mb-2">Nombre</label>
+          <input type="text" name="nombre" required
+                 class="w-full bg-transparent border border-arena/60 px-4 py-3 font-sans text-sm text-carbon placeholder-carbon/30 focus:outline-none focus:border-mar transition-colors"
+                 placeholder="Tu nombre" />
+        </div>
+        <div>
+          <label class="block font-sans text-xs tracking-widest uppercase text-carbon/50 mb-2">Correo electrónico</label>
+          <input type="email" name="email" required
+                 class="w-full bg-transparent border border-arena/60 px-4 py-3 font-sans text-sm text-carbon placeholder-carbon/30 focus:outline-none focus:border-mar transition-colors"
+                 placeholder="tu@correo.com" />
+        </div>
+        <div>
+          <label class="block font-sans text-xs tracking-widest uppercase text-carbon/50 mb-2">Teléfono <span class="normal-case tracking-normal text-carbon/30">(opcional)</span></label>
+          <input type="tel" name="telefono"
+                 class="w-full bg-transparent border border-arena/60 px-4 py-3 font-sans text-sm text-carbon placeholder-carbon/30 focus:outline-none focus:border-mar transition-colors"
+                 placeholder="+56 9 xxxx xxxx" />
+        </div>
+        <div>
+          <label class="block font-sans text-xs tracking-widest uppercase text-carbon/50 mb-2">Mensaje</label>
+          <textarea name="mensaje" rows="4"
+                    class="w-full bg-transparent border border-arena/60 px-4 py-3 font-sans text-sm text-carbon placeholder-carbon/30 focus:outline-none focus:border-mar transition-colors resize-none"
+                    placeholder="¿Qué te gustaría saber sobre Bahía Alta?"></textarea>
+        </div>
+        <button type="submit"
+                class="w-full py-4 bg-carbon text-hueso font-sans text-xs tracking-widest uppercase hover:bg-mar transition-colors duration-300">
+          Enviar mensaje
+        </button>
+        <p id="form-success" class="hidden font-sans text-xs text-oliva tracking-wide text-center pt-2">
+          Mensaje recibido. Te contactaremos pronto.
+        </p>
+        <p id="form-error" class="hidden font-sans text-xs text-red-400 tracking-wide text-center pt-2">
+          Por favor completa nombre y correo.
+        </p>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="bg-carbon text-hueso/50 py-12 px-6 border-t border-hueso/10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <span class="font-serif text-lg tracking-widest text-hueso/80 uppercase">
+        Bahía Alta <span class="text-arena">·</span> Quinched
+      </span>
+      <p class="font-sans text-xs tracking-wide text-center">
+        Quinched, Isla Grande de Chiloé · Chile
+      </p>
+      <p class="font-sans text-xs">
+        © 2025 Bahía Alta · Quinched
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- ══════════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════════ -->
+  <script>
+    // ── Intersection Observer: reveal animations ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // Trigger reveals already in viewport on load
+    window.addEventListener('load', () => {
+      revealEls.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) el.classList.add('visible');
+      });
+    });
+
+    // ── Mobile menu ──
+    const toggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const bar1 = document.getElementById('bar1');
+    const bar2 = document.getElementById('bar2');
+    const bar3 = document.getElementById('bar3');
+    let menuOpen = false;
+
+    toggle.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('hidden', !menuOpen);
+      bar1.style.transform = menuOpen ? 'translateY(6px) rotate(45deg)' : '';
+      bar2.style.opacity   = menuOpen ? '0' : '1';
+      bar3.style.transform = menuOpen ? 'translateY(-6px) rotate(-45deg)' : '';
+      bar3.style.width     = menuOpen ? '24px' : '';
+    });
+
+    function closeMobileMenu() {
+      menuOpen = false;
+      mobileMenu.classList.add('hidden');
+      bar1.style.transform = '';
+      bar2.style.opacity   = '1';
+      bar3.style.transform = '';
+      bar3.style.width     = '';
+    }
+
+    // ── Nav shadow on scroll ──
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.boxShadow = window.scrollY > 20
+        ? '0 1px 20px rgba(47,52,55,0.08)'
+        : 'none';
+    });
+
+    // ── Form handling ──
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nombre = this.nombre.value.trim();
+      const email  = this.email.value.trim();
+      const success = document.getElementById('form-success');
+      const error   = document.getElementById('form-error');
+
+      if (!nombre || !email) {
+        error.classList.remove('hidden');
+        success.classList.add('hidden');
+        return;
+      }
+      error.classList.add('hidden');
+      success.classList.remove('hidden');
+      this.reset();
+    });
+  </script>
+</body>
+</html>
