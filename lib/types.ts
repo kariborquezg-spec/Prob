@@ -38,6 +38,7 @@ export interface CatalogService {
   logoUrl?: string;
   defaultPrice?: number;
   defaultCurrency?: Currency;
+  isAggregator?: boolean; // App Store, Play Store — detect multiple apps per sender
 }
 
 export interface GmailDetectedSubscription {
@@ -48,4 +49,5 @@ export interface GmailDetectedSubscription {
   estimatedPrice?: number;
   currency?: Currency;
   confirmed: boolean;
+  detectedName?: string; // extracted app name for aggregator services
 }

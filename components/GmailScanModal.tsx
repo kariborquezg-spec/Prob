@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { GmailDetectedSubscription, Subscription } from "@/lib/types";
+
 import { CATEGORY_LABELS } from "@/lib/catalog";
 import { X, Mail, Loader2, CheckCircle2, AlertCircle, Plus } from "lucide-react";
 import { addMonths, format } from "date-fns";
@@ -49,18 +50,22 @@ export default function GmailScanModal({ onClose, onImport, existingNames }: Pro
     }
   }
 
-  function toggleSelect(name: string) {
+  function getItemKey(d: GmailDetectedSubscription) {
+    return d.detectedName ? `${d.service.name}:${d.detectedName}` : d.service.name;
+  }
+
+  function toggleSelect(key: string) {
     const next = new Set(selected);
-    if (next.has(name)) next.delete(name);
-    else next.add(name);
+    if (next.has(key)) next.delete(key);
+    else next.add(key);
     setSelected(next);
   }
 
   function handleImport() {
-    const toImport = detected.filter((d) => selected.has(d.service.name));
+    const toImport = detected.filter((d) => selected.has(getItemKey(d)));
     const subs: Subscription[] = toImport.map((d) => ({
       id: crypto.randomUUID(),
-      name: d.service.name,
+      name: d.detectedName || d.service.name,
       price: d.estimatedPrice || 0,
       currency: d.currency || "USD",
       billingCycle: "monthly",
@@ -173,12 +178,14 @@ export default function GmailScanModal({ onClose, onImport, existingNames }: Pro
 
               <div className="space-y-2 max-h-72 overflow-y-auto">
                 {detected.map((d) => {
-                  const isExisting = existingNames.includes(d.service.name);
-                  const isSelected = selected.has(d.service.name);
+                  const key = getItemKey(d);
+                  const displayName = d.detectedName || d.service.name;
+                  const isExisting = existingNames.includes(displayName);
+                  const isSelected = selected.has(key);
                   return (
                     <button
-                      key={d.service.name}
-                      onClick={() => !isExisting && toggleSelect(d.service.name)}
+                      key={key}
+                      onClick={() => !isExisting && toggleSelect(key)}
                       disabled={isExisting}
                       className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all text-left ${
                         isExisting
@@ -192,11 +199,13 @@ export default function GmailScanModal({ onClose, onImport, existingNames }: Pro
                         className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0"
                         style={{ backgroundColor: d.service.color }}
                       >
-                        {d.service.name.slice(0, 2).toUpperCase()}
+                        {displayName.slice(0, 2).toUpperCase()}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900 text-sm">{d.service.name}</p>
-                        <p className="text-xs text-gray-400">{CATEGORY_LABELS[d.service.category]}</p>
+                        <p className="font-semibold text-gray-900 text-sm">{displayName}</p>
+                        <p className="text-xs text-gray-400">
+                          {d.service.isAggregator ? d.service.name : CATEGORY_LABELS[d.service.category]}
+                        </p>
                       </div>
                       {d.estimatedPrice ? (
                         <span className="text-sm font-semibold text-gray-700">
