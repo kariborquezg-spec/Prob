@@ -1,6 +1,15 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
+declare module "next-auth" {
+  interface Session {
+    accessToken?: string;
+  }
+  interface JWT {
+    accessToken?: string;
+  }
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
   trustHost: true,
@@ -10,8 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope:
-            "openid email profile https://www.googleapis.com/auth/gmail.readonly",
+          scope: "openid email profile https://www.googleapis.com/auth/gmail.readonly",
           access_type: "offline",
           prompt: "consent",
         },
@@ -20,14 +28,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
+      if (account?.access_token) {
+        token.accessToken = account.access_token as string;
       }
       return token;
     },
     async session({ session, token }) {
-      (session as { accessToken?: string }).accessToken = token.accessToken as string;
+      session.accessToken = token.accessToken as string | undefined;
       return session;
     },
   },
