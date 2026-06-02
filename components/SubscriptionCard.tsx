@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Subscription } from "@/lib/types";
 import { CATEGORY_LABELS, CURRENCY_SYMBOLS } from "@/lib/catalog";
 import { getDaysUntilBilling } from "@/lib/storage";
@@ -12,6 +13,33 @@ interface Props {
   onEdit: (sub: Subscription) => void;
   onDelete: (id: string) => void;
   onToggle: (sub: Subscription) => void;
+}
+
+function ServiceLogo({ name, color, logoUrl }: { name: string; color: string; logoUrl?: string }) {
+  const [imgError, setImgError] = useState(false);
+  const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+
+  if (logoUrl && !imgError) {
+    return (
+      <div className="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
+        <img
+          src={logoUrl}
+          alt={name}
+          className="w-8 h-8 object-contain"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
+      style={{ backgroundColor: color }}
+    >
+      {initials}
+    </div>
+  );
 }
 
 export default function SubscriptionCard({ sub, onEdit, onDelete, onToggle }: Props) {
@@ -27,13 +55,6 @@ export default function SubscriptionCard({ sub, onEdit, onDelete, onToggle }: Pr
     quarterly: "/trim",
   }[sub.billingCycle];
 
-  const initials = sub.name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-
   return (
     <div
       className={`bg-white rounded-2xl p-4 shadow-sm border transition-all ${
@@ -41,13 +62,7 @@ export default function SubscriptionCard({ sub, onEdit, onDelete, onToggle }: Pr
       }`}
     >
       <div className="flex items-start gap-3">
-        {/* Logo / Avatar */}
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
-          style={{ backgroundColor: sub.color }}
-        >
-          {initials}
-        </div>
+        <ServiceLogo name={sub.name} color={sub.color} logoUrl={sub.logoUrl} />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2">
@@ -61,10 +76,7 @@ export default function SubscriptionCard({ sub, onEdit, onDelete, onToggle }: Pr
           <div className="flex items-center gap-2 mt-1">
             <span
               className="text-xs px-2 py-0.5 rounded-full font-medium"
-              style={{
-                backgroundColor: `${sub.color}18`,
-                color: sub.color,
-              }}
+              style={{ backgroundColor: `${sub.color}18`, color: sub.color }}
             >
               {CATEGORY_LABELS[sub.category]}
             </span>
@@ -75,15 +87,11 @@ export default function SubscriptionCard({ sub, onEdit, onDelete, onToggle }: Pr
 
           <div className="flex items-center justify-between mt-3">
             <div className="flex items-center gap-1.5">
-              {isUpcoming && (
-                <Bell size={12} className="text-amber-500" />
-              )}
+              {isUpcoming && <Bell size={12} className="text-amber-500" />}
               <span
                 className={`text-xs ${
-                  isOverdue
-                    ? "text-red-500 font-medium"
-                    : isUpcoming
-                    ? "text-amber-500 font-medium"
+                  isOverdue ? "text-red-500 font-medium"
+                    : isUpcoming ? "text-amber-500 font-medium"
                     : "text-gray-400"
                 }`}
               >
@@ -91,7 +99,7 @@ export default function SubscriptionCard({ sub, onEdit, onDelete, onToggle }: Pr
                   ? `Vencido hace ${Math.abs(daysLeft)}d`
                   : daysLeft === 0
                   ? "Hoy"
-                  : `${format(new Date(sub.nextBillingDate), "d MMM", { locale: es })}`}
+                  : format(new Date(sub.nextBillingDate), "d MMM", { locale: es })}
               </span>
             </div>
 
@@ -103,9 +111,7 @@ export default function SubscriptionCard({ sub, onEdit, onDelete, onToggle }: Pr
                 }`}
               >
                 <span
-                  className={`absolute top-0.5 w-3 h-3 bg-white rounded-full shadow transition-all ${
-                    sub.active ? "left-4.5" : "left-0.5"
-                  }`}
+                  className="absolute top-0.5 w-3 h-3 bg-white rounded-full shadow transition-all"
                   style={{ left: sub.active ? "17px" : "2px" }}
                 />
               </button>

@@ -498,6 +498,10 @@ export const SERVICE_CATALOG: CatalogService[] = [
   },
 ];
 
+export function getLogoUrl(service: { emailDomains: string[] }): string {
+  return `https://logo.clearbit.com/${service.emailDomains[0]}`;
+}
+
 export const CATEGORY_LABELS: Record<string, string> = {
   streaming: "Streaming",
   music: "Música",

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { GmailDetectedSubscription, Subscription } from "@/lib/types";
 
-import { CATEGORY_LABELS } from "@/lib/catalog";
+import { CATEGORY_LABELS, getLogoUrl } from "@/lib/catalog";
 import { X, Mail, Loader2, CheckCircle2, AlertCircle, Plus } from "lucide-react";
 import { addMonths, format } from "date-fns";
 
@@ -72,6 +72,7 @@ export default function GmailScanModal({ onClose, onImport, existingNames }: Pro
       nextBillingDate: format(addMonths(new Date(), 1), "yyyy-MM-dd"),
       category: d.service.category,
       color: d.service.color,
+      logoUrl: d.service.isAggregator ? undefined : getLogoUrl(d.service),
       active: true,
       createdAt: new Date().toISOString(),
     }));

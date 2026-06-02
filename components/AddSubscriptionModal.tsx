@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Subscription, BillingCycle, Currency, Category } from "@/lib/types";
-import { SERVICE_CATALOG, CATEGORY_LABELS, CURRENCY_SYMBOLS } from "@/lib/catalog";
+import { SERVICE_CATALOG, CATEGORY_LABELS, CURRENCY_SYMBOLS, getLogoUrl } from "@/lib/catalog";
 import { X, Search } from "lucide-react";
 import { addMonths, format } from "date-fns";
 
@@ -36,6 +36,7 @@ export default function AddSubscriptionModal({ onClose, onSave, editing }: Props
     color: "#888888",
     email: "",
     notes: "",
+    logoUrl: "",
   });
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function AddSubscriptionModal({ onClose, onSave, editing }: Props
         color: editing.color,
         email: editing.email || "",
         notes: editing.notes || "",
+        logoUrl: editing.logoUrl || "",
       });
     }
   }, [editing]);
@@ -69,6 +71,7 @@ export default function AddSubscriptionModal({ onClose, onSave, editing }: Props
       color: svc.color,
       price: svc.defaultPrice?.toString() || f.price,
       currency: svc.defaultCurrency || f.currency,
+      logoUrl: getLogoUrl(svc),
     }));
     setSearch("");
   }
@@ -86,6 +89,7 @@ export default function AddSubscriptionModal({ onClose, onSave, editing }: Props
       color: form.color,
       email: form.email || undefined,
       notes: form.notes || undefined,
+      logoUrl: form.logoUrl || undefined,
       active: editing?.active ?? true,
       createdAt: editing?.createdAt || new Date().toISOString(),
     };
